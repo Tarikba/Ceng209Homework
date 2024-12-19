@@ -7,7 +7,7 @@ A simple command-based dungeon adventure game written with c programming languag
 3. [About game](#about-game)
 4. [How to play](#how-to-play)
 5. [How it works?](#how-it-works)
-6. 
+
 ## How to setup?
 1. * First, open your terminal
 2. * Clone this repository
