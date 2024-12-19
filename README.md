@@ -1,5 +1,13 @@
 # Dungeon Adventure
 A simple command-based dungeon adventure game written with c programming language. This project is made for Ceng209 Fall 2024 Homework.
+
+# Table of Contents
+1. [Dungeon Adventure](#dungeon-adventure)
+2. [How to setup?](#how-to-setup)
+3. [About game](#about-game)
+4. [How to play](#how-to-play)
+5. [How it works?](#how-it-works)
+6. 
 ## How to setup?
 1. * First, open your terminal
 2. * Clone this repository
@@ -10,7 +18,7 @@ git clone <https://github.com/Tarikba/DungeonAdventure>
 ```
 cd DungeonAdventure
 ```
-3. * Use Makefile (You can use with mignw32 to ensure, if you use Windows)
+3. * Use Makefile (You can use with mignw32 to ensure, if you are on Windows)
 ```
 mingw32-make
 ```
