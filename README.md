@@ -195,3 +195,129 @@ Your turn
 DUNGEON ADVENTURE
 >>
 ```
+
+## How it works?
+  Now implementation of the game will be explained.
+Let's start with structs. Since c doesn't support objcet oriented programming, some OOP concepts are tried to imitated.
+The game consists of 4 structs which are all in the `structures.h` file.
+```
+#define INVENTORY_CAPACITY 5 //use wisely
+typedef enum item_type {HPBUFF, ATKBUFF, BOTHBUFF, TRIVIAL} item_type;
+
+typedef struct Room {
+    int x;
+    int y;
+
+    const char* roomMessage;
+    const char* roomInfo;
+    bool hasCreature;
+    bool hasItem;
+
+    bool goesUp;
+    bool goesDown;
+    bool goesLeft;
+    bool goesRight;
+} Room;
+
+typedef struct Item {
+    const char* itemName;
+    item_type itemType;
+    int itemValue;
+    const char* itemDetails;
+    bool isUsed;
+} Item;
+
+typedef struct Player {
+    int hp;
+    int dmg;
+    Item* bag[INVENTORY_CAPACITY];
+    int itemCount;
+} Player;
+
+typedef struct Creature {
+    int c_hp;
+    int c_dmg;
+    bool isAlive;
+} Creature;
+```
+Rest of the implementation is in the `DungeonAdventure.c` file.
+
+These are the headers included:
+```
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#include <string.h>
+#include <unistd.h>
+#include "structures.h"
+```
+Constants:
+```
+#define DEFAULT_INPUT_LENGHT 32
+#define ROW_LENGTH 3
+#define COLUMN_LENGTH 8
+```
+enum `game_status` holds the information and checks state of game:
+```
+typedef enum game_statuses {COMPLETED, FAILED, RUNNING, GAMEOUT} game_status;
+game_status currentStatus;
+```
+Pointers that point to data of location where the player is
+```
+Room* currentRoom;
+Room* roomMap[ROW_LENGTH][COLUMN_LENGTH];
+Item* itemLocations[ROW_LENGTH][COLUMN_LENGTH];
+Player* player;
+Creature* roomEnemy;
+Item* itemOfRoom;
+```
+The `firstBlood` boolean becomes `true` when first blood is drawn,  
+```
+static bool firstBlood = false;
+```
+and resets if game finishes (COMPLETED,FAILED,GAMEOUT)
+
+
+Function prototypes to prevent confusion
+```
+// Function prototypes
+game_status runGame(void);
+char* getInput(void);
+void menuParser(char* menuInput);
+void inGameParser(char* commandInput);
+void createMap(void);
+Room* createRoom(int x, int y, bool gD, bool gL, bool gR, bool gU, bool hC, bool hI, const char* rM, const char* rI);
+Player* createPlayer(void);
+Creature* createCreature(void);
+Creature* createDragon(void);
+Item* createItem(const char* name, item_type type, int value, const char* details);
+void pickupItem(void);
+void useItem(int itemIndex);
+void openBag(void);
+void addItem(Room* room, Item* item);
+void move(char way);
+void hit(Creature* crtr, Player* plyr);
+void getHitBy(Creature* crtr, Player* plyr);
+void battle(Player* plyr, Creature* crtr);
+void printMap(void);
+void showMenu(void);
+void instructions(void);
+```
+
+Our `main()` has just 12 lines:
+```
+int main() {
+    char* currentMenuCmd;
+    printf("DUNGEON ADVENTURE");
+
+    while(1) { 
+        currentMenuCmd = getInput();
+        menuParser(currentMenuCmd);
+    }
+
+    return 0;
+}
+```
+
+`menuParser()` takes commands and controls the game
+
