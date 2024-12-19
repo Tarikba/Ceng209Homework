@@ -277,33 +277,6 @@ static bool firstBlood = false;
 ```
 and resets if game finishes (COMPLETED,FAILED,GAMEOUT)
 
-
-Function prototypes to prevent confusion
-```
-// Function prototypes
-game_status runGame(void);
-char* getInput(void);
-void menuParser(char* menuInput);
-void inGameParser(char* commandInput);
-void createMap(void);
-Room* createRoom(int x, int y, bool gD, bool gL, bool gR, bool gU, bool hC, bool hI, const char* rM, const char* rI);
-Player* createPlayer(void);
-Creature* createCreature(void);
-Creature* createDragon(void);
-Item* createItem(const char* name, item_type type, int value, const char* details);
-void pickupItem(void);
-void useItem(int itemIndex);
-void openBag(void);
-void addItem(Room* room, Item* item);
-void move(char way);
-void hit(Creature* crtr, Player* plyr);
-void getHitBy(Creature* crtr, Player* plyr);
-void battle(Player* plyr, Creature* crtr);
-void printMap(void);
-void showMenu(void);
-void instructions(void);
-```
-
 Our `main()` has just 12 lines:
 ```
 int main() {
@@ -319,5 +292,94 @@ int main() {
 }
 ```
 
-`menuParser()` takes commands and controls the game
+`menuParser()` takes commands and controls the game, also calls `inGameParser()` if `currentCmd == "start"`.
+Parsing process in the other methods (`inGameParser()`, `battle()`, `openBag()`) is likely similar to `menuParser()`. 
+```
+void menuParser(char* menuInput) {
+    char menuCommand[DEFAULT_INPUT_LENGHT];
+    sscanf(menuInput, "%s %[^\n]", menuCommand);
 
+    if(strcmp(menuCommand, "exit") == 0) exit(EXIT_SUCCESS);
+    else if (strcmp(menuCommand, "menu") == 0) showMenu();
+    else if (strcmp(menuCommand, "keys") == 0) instructions();
+    else if (strcmp(menuCommand, "start") == 0) runGame();
+    else {
+        printf("Enter valid command!");
+        char* failedInput = getInput();
+        menuParser(failedInput);
+        free(failedInput);
+    }
+}
+```
+Creatures are created within `inGameParser()` if there is a creature in the room.
+```
+if(currentRoom->hasCreature) roomEnemy = createCreature();
+```
+Dragon is an exception:
+```
+if(currentRoom->x == 1 && currentRoom->y == 1 && currentRoom->hasCreature) {
+    roomEnemy = createDragon();
+    // ...
+}
+```
+`createMap()` function is the longest function of this project. It initializes whole map with rooms and items.
+At below, you can see initialization two rooms of map with their items (if they have), and end of function:
+```
+void createMap(void) {
+    //      room                    x/ y/ down/ left/ right/ up/ creature/ item/  message/                                             info
+    Room* startingRoom = createRoom(1, 3, true, true, true, true, false, false, "It seems this place is the middle of a crossroads", "This is where all begins");
+    
+    Room* potionRoom = createRoom(0, 3, true, false, false, false, false, true, "You found an abandoned alchemy laboratory", "You see old cauldrons, broken glass bottles and some bones");
+
+    Item* potion = createItem("Potion", HPBUFF, 20, "A potion made of medicinal herbs and some magic");
+    addItem(potionRoom, potion);
+
+      // ...
+
+    currentRoom = startingRoom;
+}
+```
+While `createMap()` returns void, since it use other constructors, createStruct functions return a pointer of each struct.
+```
+Room* createRoom(int x, int y, bool gD, bool gL, bool gR, bool gU, bool hC, bool hI, const char* rM, const char* rI);
+Player* createPlayer(void);
+Creature* createCreature(void);
+Creature* createDragon(void);
+Item* createItem(const char* name, item_type type, int value, const char* details);
+```
+Inside of `runGame()` function, map and player are constructed.
+```
+game_status runGame(void) {
+    currentStatus = RUNNING;
+    createMap();
+    char* currentGameCmd;
+    player = createPlayer();
+    // ...
+}
+```
+Exit rooms cannot go through any other rooms.
+In `runGame()`:
+```
+if(!(currentRoom->goesDown) && !(currentRoom->goesLeft) && !(currentRoom->goesRight) && !(currentRoom->goesUp)) { //if currentRoom is an exit
+            firstBlood = false;
+            currentStatus = COMPLETED;
+            sleep(1);
+            printf("Your journey ends here for now\n"); sleep(1);
+            printf("\nDUNGEON ADVENTURE");
+        }
+```
+When player picks up an item, it is removed from the room.
+In `pickupItem()`:
+```
+currentRoom->hasItem = false; //item is taken by player
+            if(!(currentRoom->hasItem) && (itemLocations[currentRoom->x][currentRoom->y] != NULL)) 
+            itemLocations[currentRoom->x][currentRoom->y] = NULL; 
+            free(foundItem);
+            printf("Item added to inventory\n");
+```
+For combat mechanism, there are 3 functions. `battle()` includes `hit()` and `getHitBy()`.
+```
+void hit(Creature* crtr, Player* plyr);
+void getHitBy(Creature* crtr, Player* plyr);
+void battle(Player* plyr, Creature* crtr);
+```
