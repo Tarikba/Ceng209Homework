@@ -90,7 +90,7 @@ You are here
 ```
   * `1` : player
   * `0` : empty rooms
-  * `C` : creatures
+  * `C` : creatures (when a room is "cleaned", it will be `0`)
   * `#` : walls
 **Warning:** Some rooms might have no connection in each other. 
 **Warning:** Empty room doesn't mean there is no item, there might be.
@@ -140,11 +140,58 @@ Your turn
 >>
 ```
 Battles are turned-based, a battle ends when one of the sides is defeated.
-**Warning:** If you don't `attack` properly, this will happen:
+**Warning:** If you don't `attack` properly, you only take damage:
 ```
+Your turn
 >> attackannytypo
 You've been hit by creature
 You have 80 hp remained
 Your turn
+>>
+```
+Be careful to that!
+When a battle ends and you win, you will return to the game screen such as:
+```
+Your turn
+>> attack
+You hit the creature
+Creature's hp decreased to 0
+Creature defeated
+
+>> look
+You can barely see around and hear some creatures clattering
+It seems safe
+```
+And if you lose:
+```
+You've been hit by creature
+You have 0 hp remained
+You died
+
+DUNGEON ADVENTURE
+>>
+```
+**Warning:** If you kill a creature for the first time in a game, all creatures you will encounter until then will attack you first.
+This is called "First Blood Mechanism". A showcase what will happen when you drew the first blood:
+```
+>> attack
+You hit the creature
+Creature's hp decreased to 0
+Creature defeated
+
+>> move d
+This cave is crawling with creatures, be careful!
+Watch out!! A creature is approaching you
+Battle begins!!!
+You've been hit by creature
+You have 80 hp remained
+Your turn
+>>
+```
+* The last but the not least, you can go back to game menu by terminating current game with `quit`
+```
+>> quit
+
+DUNGEON ADVENTURE
 >>
 ```
