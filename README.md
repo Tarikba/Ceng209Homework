@@ -27,7 +27,7 @@ During this; they will encounter creatures, find unique items, and maybe confron
 ## How to play
   If you installed the game successfully, you can play now.   
 Since this is a command line based game, you should play this game on a terminal.
-* When you run the game, the game menu should be opened.
+* When you run the game, menu screen of the game should be opened.
 ```
 DUNGEON ADVENTURE
 >>
@@ -39,4 +39,112 @@ DUNGEON ADVENTURE
 1. menu  - Shows menu commands    
 3. keys  - Shows game instructions
 4. exit  - Exits from game
+```
+* Type `start` to begin your journey
+Game should be started. After that you should use game commands
+n the game, there are 7 game commands to play the game.
+(You can see these commands with explanation if you type `keys` on the menu srceen)
+These commands are:
+
+* `look` is used to see room descriptions and to check if there is any creature or item.
+```
+>> look
+This is where all begins
+It seems safe
+
+```
+* `pickup` to pick up an item if it exists within room.
+```
+>> pickup
+Item added to inventory
+```
+* Use `inventory` to see your items.
+```
+>> inventory
+Inventory:
+1. Potion
+(You can have 4 more items)
+Select item (enter 0 to close bag)
+>>
+```
+* While in your bag, you can select an item by entering its number on the left. Some items give you buffs.
+(you can exit from inventory by typing `0`)
+```
+Inventory:
+1. Potion
+(You can have 4 more items)
+Select item (enter 0 to close bag)
+>> 1
+Potion: A potion made of medicinal herbs and some magic
+Hp is increased to 120
+```
+**Warning:** You can have at most 5 items. Use your bag wisely.
+
+* `map` gives you a simple visualization of the dungeon. For instance, map of game at the beginning is: 
+```
+>> map
+###0####
+0C01C0C0
+###CCCC0
+You are here
+```
+  * `1` : player
+  * `0` : empty rooms
+  * `C` : creatures
+  * `#` : walls
+**Warning:** Some rooms might have no connection in each other. 
+**Warning:** Empty room doesn't mean there is no item, there might be.
+
+* You can go other rooms with `move` command. Its syntax is `move <direction>`.
+<direction> is one of the characters from WASD. As an example:
+```
+>> move d
+```
+That means "go right". Other ways are:
+  * `w`: go up
+  * `a`: go left
+  * `s`: go down
+**Warning:** If you type a way room has no connection (or any nonexisting way/typo)
+You will see this message:
+```
+>> move s
+It is blocked here. You shall not pass!
+
+>> move imadeupthis
+It is blocked here. You shall not pass!
+```
+* If there is a creature in the room, you can fight it with `attack`.
+```
+>> look
+You can barely see around and hear some creatures clattering
+You see a creature!
+
+>> attack
+```
+When you start a battle, it will be seem like:
+```
+>> attack
+Battle begins!!!
+>>
+```
+With `attack` command, you can start a fight, as well as hit the opponents. (It has two functions)
+```
+>> attack
+Battle begins!!!
+>> attack
+You hit the creature
+Creature's hp decreased to 60
+You've been hit by creature
+You have 95 hp remained
+Your turn
+>>
+```
+Battles are turned-based, a battle ends when one of the sides is defeated.
+**Warning:** If you don't `attack` properly, this will happen:
+```
+>> attackannytypo
+You've been hit by creature
+You have 80 hp remained
+Your turn
+>>
 ```
