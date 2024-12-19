@@ -25,3 +25,18 @@ Players should find one of these exits to complete the game by wandering through
 During this; they will encounter creatures, find unique items, and maybe confront with a fierce dragon.
 
 ## How to play
+  If you installed the game successfully, you can play now.   
+Since this is a command line based game, you should play this game on a terminal.
+* When you run the game, the game menu should be opened.
+```
+DUNGEON ADVENTURE
+>>
+```
+* By typing `menu`, you can see the menu commands.
+```
+>> menu
+1. start - Starts the game        
+1. menu  - Shows menu commands    
+3. keys  - Shows game instructions
+4. exit  - Exits from game
+```
