@@ -101,9 +101,9 @@ You are here
 >> move d
 ```
 That means "go right". Other ways are:
-    * `w`: go up
-    * `a`: go left
-    * `s`: go down
+  * `w`: go up
+  * `a`: go left
+  * `s`: go down
 **Warning:** If you type a way room has no connection (or any nonexisting way/typo)
 You will see this message:
 ```
