@@ -102,6 +102,7 @@ You are here
   * `#` : walls
 
 **Warning:** Some rooms might have no connection in each other. 
+
 **Warning:** Empty room doesn't mean there is no item, there might be.
 
 * You can go other rooms with `move` command. Its syntax is `move <direction>`.
