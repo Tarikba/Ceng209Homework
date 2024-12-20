@@ -100,6 +100,7 @@ You are here
   * `0` : empty rooms
   * `C` : creatures (when a room is "cleaned", it will be `0`)
   * `#` : walls
+
 **Warning:** Some rooms might have no connection in each other. 
 **Warning:** Empty room doesn't mean there is no item, there might be.
 
